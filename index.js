@@ -10,6 +10,8 @@ var t = new Twitter({
     token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 })
 
+var mtURL = process.env.PRODUCTION ? 'https://morelia-tweets.herokuapp.com/tweets' : 'localhost:3001/tweets';
+
 t.on('tweet', function (tweet) {
     console.log('tweet received:', tweet.text);
     uploadTweet(tweet);
