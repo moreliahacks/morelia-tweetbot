@@ -35,7 +35,7 @@ function uploadTweet(tweet) {
     })
     .then(
         function(response){
-            console.log(type of response);
+            console.log(typeof response);
             return rp({
                 url: mtURL,
                 method: "POST",
