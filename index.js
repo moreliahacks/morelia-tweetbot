@@ -20,7 +20,10 @@ t.on('tweet', function (tweet) {
     console.log('tweet received:', tweet.text);
     x = tweet.text;
 
-    uploadTweet(tweet);
+    if(!tweet.text.match('^RT')){
+        uploadTweet(tweet);
+    }
+
 });
 
 app.set('port', (process.env.PORT || 5000));
