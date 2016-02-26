@@ -23,11 +23,13 @@ t.on('tweet', function (tweet) {
     uploadTweet(tweet);
 });
 
+app.set('port', (process.env.PORT || 5000));
+
 app.get('/', function (req, res) {
     res.send('Bot is online: ' + x || 'Nope');
 });
 
-app.listen(8080, function () {
+app.listen(app.get('port'), function() {
     console.log('Server is listen in 8080');
     t.track('morelia');
 });
