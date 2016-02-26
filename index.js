@@ -25,18 +25,17 @@ client.stream('statuses/filter', {track: 'morelia'},  function(stream){
 
 function uploadTweet(tweet) {
 
-    console.log(tweet);
-
     rp({
         url: "https://sentimental-language.herokuapp.com/translate?text=" + tweet.text,
         method: 'GET',
+        json: true,
         headers: {
             'User-Agent': 'Morelia-Tweet-Bot'
         },
     })
     .then(
         function(response){
-            console.log(response.data);
+            console.log(type of response);
             return rp({
                 url: mtURL,
                 method: "POST",
@@ -59,12 +58,11 @@ function uploadTweet(tweet) {
             })
         }
     )
-    .then(function(){
-        console.log('Success Upload');
-    })
-    .catch(function(error){
-        console.log('Error');
-    });
+    .catch(
+        function(){
+            console.log('Upload error');
+        }
+    );
 
 }
 
