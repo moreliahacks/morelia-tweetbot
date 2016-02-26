@@ -17,10 +17,9 @@ var x;
 var mtURL = process.env.PRODUCTION ? 'https://morelia-tweets.herokuapp.com/tweets' : 'localhost:3001/tweets';
 
 t.on('tweet', function (tweet) {
-    console.log('tweet received:', tweet.text);
-    x = tweet.text;
-
     if(!tweet.text.match('^RT')){
+        console.log('tweet received:', tweet.text);
+        x = tweet.text;
         uploadTweet(tweet);
     }
 
