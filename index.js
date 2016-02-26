@@ -1,8 +1,8 @@
 'use strict';
 
-var Twitter = require('twitter')
-,   rp = require('request-promise')
-,   conta = 0;
+var Twitter         = require('twitter')
+,   rp              = require('request-promise')
+,   conta           = 0;
 
 var client = new Twitter({
     consumer_key: 'vb5Rd7e4qBn1O1aNEeCM5XDBd',
@@ -21,33 +21,46 @@ function action() {
             console.log(tweet.text);
 
             rp({
-                url: "http://localhost:8080/tweets",
-                method: "POST",
+                url: "https://sentimental-language.herokuapp.com/translate?text=" + tweet.text,
+                method: 'GET',
                 headers: {
                     'User-Agent': 'Morelia-Tweet-Bot'
                 },
-                json: true,
-                body: {
-                    text: tweet.text,
-                    twitterId: tweet.id,
-                    categories: ['Morelia'],
-                    sentimental: { puntuation: 10 },
-                    date: tweet.created_at,
-                    location: {
-                        geo: tweet.geo,
-                        coordinates: tweet.coordinates ,
-                        place: tweet.place
-                    },
-                    hashtags: tweet.text.match(/(^|\W)(#[a-z\d][\w-]*)/ig),
-                    mentions: tweet.text.match(/(^|\W)(@[a-z\d][\w-]*)/ig)
+            }).then(
+                function(sentimental){
+                    console.log(sentimental);
+                    rp({
+                        url: "http://localhost:3001/tweets",
+                        method: "POST",
+                        headers: {
+                            'User-Agent': 'Morelia-Tweet-Bot'
+                        },
+                        json: true,
+                        body: {
+                            text: tweet.text,
+                            twitterId: tweet.id,
+                            categories: ['Morelia'],
+                            sentiment: sentimental,
+                            date: tweet.created_at,
+                            location: {
+                                geo: tweet.geo,
+                                coordinates: tweet.coordinates ,
+                                place: tweet.place
+                            },
+                            hashtags: tweet.text.match(/(^|\W)(#[a-z\d][\w-]*)/ig),
+                            mentions: tweet.text.match(/(^|\W)(@[a-z\d][\w-]*)/ig)
+                        }
+                    })
+                    .then(function(success){
+                        console.log('Success');
+                    })
+                    .catch(function(error){
+                        console.log('Error');
+                    })
                 }
-            })
-            .then(function(success){
-                console.log('Success');
-            })
-            .catch(function(error){
-                console.log('Error');
-            })
+            )
+
+
         });
     });
 
