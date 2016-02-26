@@ -19,7 +19,7 @@ app.get('/', function (req, res) {
     res.send('Bot its working');
 });
 
-app.listen(8080, function () {
+app.listen(process.env.PORT || 3000, function () {
     bot();
 });
 
