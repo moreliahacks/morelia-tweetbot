@@ -1,43 +1,21 @@
 'use strict';
 
-var Twitter         = require('twitter')
-,   rp              = require('request-promise')
-,   express         = require('express')
-,   app             = express();
+var Twitter         = require('node-tweet-stream')
+,   rp              = require('request-promise');
 
-var client = new Twitter({
+var t = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+    token: process.env.TWITTER_ACCESS_TOKEN_KEY,
+    token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+})
+
+t.on('tweet', function (tweet) {
+    console.log('tweet received:', tweet.text);
+    uploadTweet(tweet);
 });
 
-var mtURL = process.env.PRODUCTION
-? 'http://morelia-tweets.herokuapp.com/tweets' : 'http://localhost:3001/tweets';
-
-app.get('/', function (req, res) {
-    res.send('Bot its working');
-});
-
-app.listen(process.env.PORT || 3000, function () {
-    bot();
-});
-
-function bot() {
-
-    console.log('Init bot');
-
-    client.stream('statuses/filter', {track: 'morelia'},  function(stream){
-        stream.on('data', function(tweet) {
-            uploadTweet(tweet);
-        });
-
-        stream.on('error', function(error) {
-            console.log(error);
-        });
-    });
-}
-
+t.track('morelia');
 
 function uploadTweet(tweet) {
 
