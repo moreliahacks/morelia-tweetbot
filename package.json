@@ -10,6 +10,8 @@
   "author": "Sebastián Osorio <im@svzosorio.co>",
   "license": "ISC",
   "dependencies": {
+    "install": "^0.5.1",
+    "npm": "^3.7.5",
     "request-promise": "^2.0.1",
     "twitter": "^1.2.5"
   }
