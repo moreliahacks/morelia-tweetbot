@@ -1,23 +1,36 @@
 'use strict';
 
 var Twitter         = require('node-tweet-stream')
-,   rp              = require('request-promise');
+,   rp              = require('request-promise')
+,   express         = require('express')
+,   app             = express();
 
 var t = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
     token: process.env.TWITTER_ACCESS_TOKEN_KEY,
     token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-})
+});
+
+var x;
 
 var mtURL = process.env.PRODUCTION ? 'https://morelia-tweets.herokuapp.com/tweets' : 'localhost:3001/tweets';
 
 t.on('tweet', function (tweet) {
     console.log('tweet received:', tweet.text);
+    x = tweet.text;
+
     uploadTweet(tweet);
 });
 
-t.track('morelia');
+app.get('/', function (req, res) {
+    res.send('Bot is online: ' + x || 'Nope');
+});
+
+app.listen(8080, function () {
+    console.log('Server is listen in 8080');
+    t.track('morelia');
+});
 
 function uploadTweet(tweet) {
 
