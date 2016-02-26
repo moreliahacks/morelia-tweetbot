@@ -1,0 +1,16 @@
+{
+  "name": "moreliatweetbot",
+  "version": "1.0.0",
+  "description": "Bot to get and save tweets about Morelia",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sebastián Osorio <im@svzosorio.co>",
+  "license": "ISC",
+  "dependencies": {
+    "request-promise": "^2.0.1",
+    "twitter": "^1.2.5"
+  }
+}
