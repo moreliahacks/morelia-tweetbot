@@ -2,6 +2,8 @@
 
 var Twitter         = require('twitter')
 ,   rp              = require('request-promise')
+,   express         = require('express')
+,   app             = express();
 
 var client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -13,15 +15,29 @@ var client = new Twitter({
 var mtURL = process.env.PRODUCTION
 ? 'http://morelia-tweets.herokuapp.com/tweets' : 'http://localhost:3001/tweets';
 
-client.stream('statuses/filter', {track: 'morelia'},  function(stream){
-    stream.on('data', function(tweet) {
-        uploadTweet(tweet);
-    });
-
-    stream.on('error', function(error) {
-        console.log(error);
-    });
+app.get('/', function (req, res) {
+    res.send('Bot its working');
 });
+
+app.listen(8080, function () {
+    bot();
+});
+
+function bot() {
+
+    console.log('Init bot');
+
+    client.stream('statuses/filter', {track: 'morelia'},  function(stream){
+        stream.on('data', function(tweet) {
+            uploadTweet(tweet);
+        });
+
+        stream.on('error', function(error) {
+            console.log(error);
+        });
+    });
+}
+
 
 function uploadTweet(tweet) {
 
