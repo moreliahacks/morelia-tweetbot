@@ -12,23 +12,18 @@ var t = new Twitter({
     token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
-var x;
-
 var mtURL = process.env.PRODUCTION ? 'https://morelia-tweets.herokuapp.com/tweets' : 'localhost:3001/tweets';
 
 t.on('tweet', function (tweet) {
     if(!tweet.text.match('^RT')){
         console.log('tweet received:', tweet.text);
-        x = tweet.text;
-        uploadTweet(tweet);
+        //uploadTweet(tweet);
     }
 });
 
-app.set('port', (process.env.PORT || 5000));
+app.use(express.static(__dirname + '/public'));
 
-app.get('/', function (req, res) {
-    res.send('Bot is online: ' + x || 'Nope');
-});
+app.set('port', (process.env.PORT || 5000));
 
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
