@@ -20,6 +20,11 @@
                 {{tweets.length}}
             </small>
         </h1>
+        <div class="text-center text-muted" ng-if="!tweets" ng-style="{'margin-top':'20%'}">
+            <h2>
+                    Cargando tweets
+            </h2>
+        </div>
         <div ng-repeat="tweet in tweets" class="jumbotron" ng-if="tweet.text">
 
             <h2>
