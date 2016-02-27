@@ -22,7 +22,6 @@ t.on('tweet', function (tweet) {
         x = tweet.text;
         uploadTweet(tweet);
     }
-
 });
 
 app.set('port', (process.env.PORT || 5000));
@@ -58,6 +57,7 @@ function uploadTweet(tweet) {
                 body: {
                     text: tweet.text,
                     twitterId: tweet.id,
+                    user: tweet.user.screen_name,
                     sentiment: response.data,
                     date: tweet.created_at,
                     location: {
