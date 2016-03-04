@@ -2,6 +2,7 @@
 
 var Twitter         = require('node-tweet-stream')
 ,   rp              = require('request-promise')
+,   categorize      = require('./categorize')
 ,   express         = require('express')
 ,   app             = express();
 
@@ -12,7 +13,7 @@ var t = new Twitter({
     token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
-var mtURL = process.env.PRODUCTION ? 'https://morelia-tweets.herokuapp.com/tweets' : 'localhost:3001/tweets';
+var mtURL = process.env.PRODUCTION ? 'https://morelia-tweets.herokuapp.com/tweets' : '0.0.0.0:3001/tweets';
 
 t.on('tweet', function (tweet) {
     if(!tweet.text.match('^RT')){
@@ -42,6 +43,7 @@ function uploadTweet(tweet) {
     })
     .then(
         function(response){
+            console.log(categorize(tweet.text));
             return rp({
                 url: mtURL,
                 method: "POST",
@@ -60,13 +62,14 @@ function uploadTweet(tweet) {
                         coordinates: tweet.coordinates ,
                         place: tweet.place
                     },
-                    entities: tweet.entities
+                    entities: tweet.entities,
+                    categories: categorize(tweet.text)
                 }
             })
         }
     )
     .catch(
-        function(){
+        function(error){
             console.log('Upload error');
         }
     );
