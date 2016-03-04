@@ -6,8 +6,6 @@ module.exports = function(tweet){
     var _categories = [];
 
     for(var key in dictionary){
-        console.log(key.toLowerCase());
-
         if(tweet.toLowerCase().match(key.toLowerCase())){
             _categories.push(dictionary[key]);
         }
