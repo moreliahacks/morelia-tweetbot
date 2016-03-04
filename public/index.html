@@ -45,7 +45,7 @@
                 {{tweet.text}}
             </p>
             <p>
-                {{tweet.categories}}
+                <span class="label label-primary" ng-repeat="categorie in tweet.categories">{{categorie}}</span>
             </p>
         </div>
     </div>
