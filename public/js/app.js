@@ -29,10 +29,7 @@ function Tweet($http) {
     this.list = function(){
         return $http({
             method: 'GET',
-            url: 'https://morelia-tweets.herokuapp.com/tweets',
-            params:{
-                limit: 100
-            }
+            url: 'https://morelia-tweets.herokuapp.com/tweets'
         })
         .then(function(response){
             return response.data.data;
