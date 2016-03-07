@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="section">
+        <p class="caption">Tweets: <b>{{tweets.length}}</b>
+        </p>
+        <div ng-repeat="tweet in tweets" ng-if="tweet.text">
+            <div class="card darken-1">
+                <div class="card-content">
+                    <span class="card-title">
+                        <a href="http://twitter.com/{{tweet.user}}" ng-if="tweet.user" target="_blank">
+                            {{'@' + tweet.user}}
+                        </a>
+                    </span>
+                    <span class="badge">
+                        {{tweet.sentiment.score}}
+                    </span>
+                    <p>
+                        {{tweet.text}}
+                    </p>
+                </div>
+                <div class="card-action" ng-if="tweet.categories.length > 0">
+                    <a ui-sref="home({category: '{{category}}'})" target="_blank" ng-repeat="category in tweet.categories">
+                        <div class="chip">
+                            {{category}}
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

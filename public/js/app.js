@@ -7,12 +7,11 @@ angular
 .service('Tweet', Tweet);
 
 function config($stateProvider) {
-
     $stateProvider
     .state('home', {
-        url: '/home?dateGte&myParam',
+        url: '?dateGte&dateLt&category',
         controller: 'MainController',
-        templateUrl: 'home.tpl.html'
+        templateUrl: 'views/home.tpl.html'
     });
 }
 
@@ -21,7 +20,6 @@ function run($rootScope, $http) {
 }
 
 function MainController($scope, Tweet, $timeout){
-
     action();
 
     function action() {
@@ -34,11 +32,14 @@ function MainController($scope, Tweet, $timeout){
 }
 
 function Tweet($http, $stateParams, $state) {
-    console.log($stateParams);
-    console.log($state);
     var params = {
         'date[$gte]': $stateParams.dateGte,
+        'date[$lt]': $stateParams.dateLt,
         'sort[date]': -1
+    }
+
+    if($stateParams.category){
+        params.categories = [$stateParams.category];
     }
 
     console.log(params);
