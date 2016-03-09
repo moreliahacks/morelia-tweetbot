@@ -1,7 +1,70 @@
 <div class="container">
     <div class="section">
-        <p class="caption">Tweets: <b>{{tweets.length}}</b>
+        <p class="caption">Tweets: <b>{{tweets.length || '0'}}</b>
         </p>
+        <ul class="collapsible popout" data-collapsible="accordion" watch>
+            <li>
+                <div class="collapsible-header">
+                    <i class="material-icons">settings</i>
+                    Configuraciones
+                </div>
+                <div class="collapsible-body container" ng-style="{padding: '20px 20px'}">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col s6">
+                                <label for="inputCreated">Desde</label>
+                                <input input-date
+                                type="text"
+                                name="created"
+                                id="inputCreated"
+                                ng-model="params.dateGte"
+                                container="body"
+                                format="yyyy-mm-dd"
+                                disable="disable"
+                                today="hoy"
+                                clear="borrar"
+                                close="cerrar"/>
+                            </div>
+                            <div class="col s6">
+                                <label for="inputCreated">Hasta</label>
+                                <input input-date
+                                type="text"
+                                name="created"
+                                id="inputCreated"
+                                ng-model="params.dateLt"
+                                container="body"
+                                format="yyyy-mm-dd"
+                                disable="disable"
+                                min="{{params.dateGte}}"
+                                today="hoy"
+                                clear="borrar"
+                                close="cerrar"
+                                min="{{}}"/>
+                            </div>
+                            <div class="col s6">
+                                <label for="inputCreated">Categoría</label>
+                                <select class="" ng-model="params.category" material-select watch>
+                                    <option value="{{category}}" ng-repeat="category in categories">{{category | uppercase}}</option>
+                                </select>
+                            </div>
+                            <div class="col s6">
+                                <label for="inputCreated">Sentimental</label>
+                                <select class="" ng-model="params.sentimental" material-select watch>
+                                    <option value="{{sentimental}}" ng-repeat="sentimental in sentimentals">{{sentimental | uppercase}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="center">
+                            <button class="btn waves-effect" ng-click="updateParams(params)">
+                                Aplicar
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
         <div ng-repeat="tweet in tweets" ng-if="tweet.text">
             <div class="card darken-1">
                 <div class="card-content">

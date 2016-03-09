@@ -1,6 +1,6 @@
 
 angular
-.module('moreliaConsumer', ['ui.router'])
+.module('moreliaConsumer', ['ui.router', 'ui.materialize'])
 .config(config)
 .run(run)
 .controller('MainController', MainController)
@@ -11,7 +11,9 @@ function config($stateProvider) {
     .state('home', {
         url: '?dateGte&dateLt&category',
         controller: 'MainController',
-        templateUrl: 'views/home.tpl.html'
+        templateUrl: 'views/home.tpl.html',
+        cache: false,
+        reloadOnSearch: true
     });
 }
 
@@ -19,31 +21,57 @@ function run($rootScope, $http) {
     console.log('Its running');
 }
 
-function MainController($scope, Tweet, $timeout){
+function MainController($scope, Tweet, $timeout, $state){
+
+    var params = $state.params;
+
+    $scope.updateParams = updateParams;
+    $scope.params = angular.copy($state.params);
+
+    $scope.categories = [
+        'movilidad', 'seguridad', 'servicios públicos', 'salud',
+        'turismo', 'deportes', 'eventos', 'ninguna', 'todas'
+    ];
+
+    $scope.sentimentals = [
+        'positivo', 'negativo', 'neutro'
+    ];
+
     action();
 
+    function updateParams(data) {
+        params = data;
+        $state.go('home', params);
+        action();
+    }
+
     function action() {
-        Tweet.list().then(function(tweets){
+        Tweet.list(params).then(function(tweets){
             $scope.tweets = tweets;
         });
 
-        $timeout(action, 10000);
+        $timeout(action, 20000);
     }
 }
 
-function Tweet($http, $stateParams, $state) {
-    var params = {
-        'date[$gte]': $stateParams.dateGte,
-        'date[$lt]': $stateParams.dateLt,
-        'sort[date]': -1
-    }
+function Tweet($http) {
 
-    if($stateParams.category){
-        params.categories = [$stateParams.category];
-    }
+    this.list = function(data){
+        var params = {
+            'date[$gte]': data.dateGte,
+            'date[$lt]': data.dateLt,
+            'sort[date]': -1
+        }
 
-    console.log(params);
-    this.list = function(){
+        if(data.category && data.category != 'ninguna' && data.category != 'todas'){
+            params.categories = [data.category];
+        }
+        else if(data.category && data.category == 'ninguna'){
+            params['categories[$size]'] = 0;
+        }
+
+        console.log(params);
+
         return $http({
             method: 'GET',
             url: 'https://morelia-tweets.herokuapp.com/tweets',
