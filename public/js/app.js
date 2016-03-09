@@ -9,7 +9,7 @@ angular
 function config($stateProvider) {
     $stateProvider
     .state('home', {
-        url: '?dateGte&dateLt&category',
+        url: '?dateGte&dateLt&category&sentiment',
         controller: 'MainController',
         templateUrl: 'views/home.tpl.html',
         cache: false,
@@ -25,6 +25,7 @@ function MainController($scope, Tweet, $timeout, $state){
 
     var params = $state.params;
 
+    $scope.loading = false;
     $scope.updateParams = updateParams;
     $scope.params = angular.copy($state.params);
 
@@ -34,7 +35,7 @@ function MainController($scope, Tweet, $timeout, $state){
     ];
 
     $scope.sentimentals = [
-        'positivo', 'negativo', 'neutro'
+        'positivo', 'negativo', 'neutro', 'todos'
     ];
 
     action();
@@ -46,11 +47,18 @@ function MainController($scope, Tweet, $timeout, $state){
     }
 
     function action() {
-        Tweet.list(params).then(function(tweets){
+        console.log('action');
+        $scope.loading = true;
+        Tweet.list(params)
+        .then(function(tweets){
             $scope.tweets = tweets;
+            $scope.loading = false;
+        })
+        .catch(function(){
+            $scope.loading = false;
         });
 
-        $timeout(action, 20000);
+        $timeout(action, 60000);
     }
 }
 
@@ -68,6 +76,16 @@ function Tweet($http) {
         }
         else if(data.category && data.category == 'ninguna'){
             params['categories[$size]'] = 0;
+        }
+
+        if(data.sentiment && data.sentiment == 'positivo'){
+            params['sentiment[score][$gte]'] = 1;
+        }
+        else if(data.sentiment && data.sentiment == 'negativo'){
+            params['sentiment[score][$lt]'] = -1;
+        }
+        else if(data.sentiment && data.sentiment == 'neutro'){
+            params['sentiment[score]'] = 0;
         }
 
         console.log(params);

@@ -1,4 +1,7 @@
 <div class="container">
+    <div class="progress" ng-if="loading">
+        <div class="indeterminate"></div>
+    </div>
     <div class="section">
         <p class="caption">Tweets: <b>{{tweets.length || '0'}}</b>
         </p>
@@ -49,7 +52,7 @@
                             </div>
                             <div class="col s6">
                                 <label for="inputCreated">Sentimental</label>
-                                <select class="" ng-model="params.sentimental" material-select watch>
+                                <select class="" ng-model="params.sentiment" material-select watch>
                                     <option value="{{sentimental}}" ng-repeat="sentimental in sentimentals">{{sentimental | uppercase}}</option>
                                 </select>
                             </div>
