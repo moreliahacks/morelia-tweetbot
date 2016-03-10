@@ -76,7 +76,7 @@
                             {{'@' + tweet.user}}
                         </a>
                     </span>
-                    <span class="badge">
+                    <span class="badge" ng-class="{'red-text': tweet.sentiment.score < 0, 'blue-text': tweet.sentiment.score == 0 , 'green-text': tweet.sentiment.score > 0}">
                         {{tweet.sentiment.score}}
                     </span>
                     <p>
