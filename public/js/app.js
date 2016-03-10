@@ -88,6 +88,13 @@ function Tweet($http) {
             params['sentiment[score]'] = 0;
         }
 
+        if(!params['date[$gte]'] &&  !params['date[$lt]']){
+            var date = new Date();
+            params['date[$gte]'] = [
+                date.getFullYear(), '-', date.getMonth()+1, '-', date.getDate()
+            ].join('');
+        }
+
         console.log(params);
 
         return $http({
