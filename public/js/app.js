@@ -107,8 +107,6 @@ function MainController($scope, Tweet, $timeout, $state, _){
                 responsive: true,
             });
 
-            console.log(categoryPuntuation(tweets));
-
             var data = {
                 labels: [
                     'Movilidad', 'Seguridad', 'Servicios públicos', 'Salud',
