@@ -5,6 +5,14 @@
     <div class="section">
         <p class="caption">Tweets: <b>{{tweets.length || '0'}}</b>
         </p>
+        <div class="row container">
+            <div class="col s6">
+                <canvas id="polar-chart"></canvas>
+            </div>
+            <div class="col s6">
+                <canvas id="bar-chart"></canvas>
+            </div>
+        </div>
         <ul class="collapsible popout" data-collapsible="accordion" watch>
             <li>
                 <div class="collapsible-header">
@@ -44,16 +52,10 @@
                                 close="cerrar"
                                 min="{{}}"/>
                             </div>
-                            <div class="col s6">
+                            <div class="col s12">
                                 <label for="inputCreated">Categoría</label>
                                 <select class="" ng-model="params.category" material-select watch>
                                     <option value="{{category}}" ng-repeat="category in categories">{{category | uppercase}}</option>
-                                </select>
-                            </div>
-                            <div class="col s6">
-                                <label for="inputCreated">Sentimental</label>
-                                <select class="" ng-model="params.sentiment" material-select watch>
-                                    <option value="{{sentimental}}" ng-repeat="sentimental in sentimentals">{{sentimental | uppercase}}</option>
                                 </select>
                             </div>
                         </div>
@@ -76,7 +78,7 @@
                             {{'@' + tweet.user}}
                         </a>
                     </span>
-                    <span class="badge" ng-class="{'red-text': tweet.sentiment.score < 0, 'blue-text': tweet.sentiment.score == 0 , 'green-text': tweet.sentiment.score > 0}">
+                    <span class="badge" ng-class="{'deep-orange-text': tweet.sentiment.score < 0, 'cyan-text': tweet.sentiment.score == 0 , 'light-green-text': tweet.sentiment.score > 0}">
                         {{tweet.sentiment.score}}
                     </span>
                     <p>
